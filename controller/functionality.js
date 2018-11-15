@@ -1,11 +1,11 @@
 const response= [{username:"Astha", age: 20}];
-exports.postfunction = function(request,response){
+exports.postfunction = function(req,res){
     response.push({username:req.body.username,
                     age: req.body.age
                 });
-                response.json({message:"Posted"});
+                res.json({message:"Posted"});
 };
 
-exports.getfunction = function(request, response){
-    response.json(response)
+exports.getfunction = function(req, res){
+    res.json(response)
 }
