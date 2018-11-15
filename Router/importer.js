@@ -7,5 +7,4 @@ router.post('/post', postcontroller.postfunction);
 
 router.get('/get', postcontroller.getfunction);
 
-
 module.exports = router;
