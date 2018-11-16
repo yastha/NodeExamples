@@ -7,5 +7,5 @@ exports.postfunction = function(req,res){
 };
 
 exports.getfunction = function(req, res){
-    res.json(response)
+    res.json(response);
 }
