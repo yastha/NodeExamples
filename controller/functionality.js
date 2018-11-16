@@ -1,38 +1,17 @@
-const Note = require('../model/note.todo.js');
-
-exports.create = (req, res) => {
-
-};
-
-exports.findAll = (req, res) => {
-
-};
-
-exports.findOne = (req, res) => {
-
-};
-
-exports.update = (req, res) => {
-
-};
-
-exports.delete = (req, res) => {
-
-};
-
+const Note = require('../model/todo.js');
 
 exports.create = (req, res) => {
     // Validate request
-    if(!req.body.content) {
+    if(!req.body.Name) {
         return res.status(400).send({
-            message: "Note content can not be empty"
+            message: "Name can not be empty"
         });
     }
 
     // Create a Note
     const note = new Note({
-        title: req.body.title || "Untitled Note", 
-        content: req.body.content
+        Name: req.body.Name || "UnNamed Note", 
+        Age: req.body.Age
     });
 
     // Save Note in the database
@@ -81,16 +60,16 @@ exports.findOne = (req, res) => {
 };
 exports.update = (req, res) => {
     // Validate Request
-    if(!req.body.content) {
+    if(!req.body.Age) {
         return res.status(400).send({
-            message: "Note content can not be empty"
+            message: "Age can not be empty"
         });
     }
 
     // Find note and update it with the request body
     Note.findByIdAndUpdate(req.params.noteId, {
-        title: req.body.title || "Untitled Note",
-        content: req.body.content
+        Name: req.body.Name || "Untitled Note",
+        Age: req.body.Age
     }, {new: true})
     .then(note => {
         if(!note) {
