@@ -1,10 +1,17 @@
-var express = require("express");
-var router = express.Router();
-var postcontroller= require("./../controller/functionality");
+
+module.exports = (app) => {
+    const notes = require("./../controller/functionality.js");
+    app.post('/notes', notes.create);
 
 
-router.post('/post', postcontroller.postfunction);
+    app.get('/notes', notes.findAll);
 
-router.get('/get', postcontroller.getfunction);
+   
+    app.get('/notes/:noteId', notes.findOne);
 
-module.exports = router;
+   
+    app.put('/notes/:noteId', notes.update);
+
+   
+    app.delete('/notes/:noteId', notes.delete);
+}
