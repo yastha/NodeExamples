@@ -43,14 +43,14 @@ catch(err){
 // Find a single note with a noteId
 exports.findOne = async (req, res) => {
 
-    if(!req.params.id) {
+    if(!req.params.noteId) {
         return res.status(404).json({
-            message: "data not found with id " + req.params.id
+            message: "data not found with id " + req.params.noteId
         });            
     }
 
     try {
-        const note = await Note.findById(req.params.id);
+        const note = await Note.findById(req.params.noteId);
         const msg = await res.json(note);
         return msg;
     }
@@ -58,11 +58,11 @@ exports.findOne = async (req, res) => {
     catch(err) {
         if(err.kind === 'ObjectId') {
             return res.status(404).json({
-                message: "data not found with id "  + req.params.id
+                message: "data not found with id "  + req.params.noteId
             });                
         }
         return res.status(500).json({
-            message: "Error retrieving data with id "  + req.params.id
+            message: "Error retrieving data with id "  + req.params.noteId
         });
     }
 };
@@ -77,7 +77,7 @@ exports.update = async (req, res) => {
     }
 // Find note and update it with the request body
 try{
-    const note = await Note.findById(res.params.id);
+    const note = await Note.findById(res.params.noteId);
     note.Name = await req.body.Name;
     note.Age = await req.body.Age;
    
@@ -93,11 +93,11 @@ const message = await res.json({message: "successfully updated"});
 catch(err) {
     if(err.kind === 'ObjectId') {
         return res.status(404).json({
-            message: "data not found with id "  + req.params.id
+            message: "data not found with id "  + req.params.noteId
         });                
     }
     return res.status(500).json({
-        message: "Error updating note with id " +req.params.id
+        message: "Error updating note with id " +req.params.noteId
     });
 }
 };
@@ -108,25 +108,25 @@ catch(err) {
 
 exports.delete = async (req, res) => {
 
-    if(!req.params.id) {
+    if(!req.params.noteId) {
         return res.status(404).json({
-            message: "data not found with id " + req.params.id
+            message: "data not found with id " + req.params.noteId
         });
     }
 
     try {
-        const note = await Note.findByIdAndRemove(req.params.id);
+        const note = await Note.findByIdAndRemove(req.params.noteId);
         const msg = await res.json({message: "data deleted successfully!"});
     }
 
     catch(err)  {
         if(err.kind === 'ObjectId' || err.Name === 'NotFound') {
             return res.status(404).json({
-                message: "data not found with id " + req.params.id
+                message: "data not found with id " + req.params.noteId
             });                
         }
         return res.status(500).json({
-            message: "Could not delete note with id " + req.params.id
+            message: "Could not delete note with id " + req.params.noteId
         });
     }
 };
@@ -136,10 +136,10 @@ exports.patch = async (req, res) => {
 
     try {
 
-        const note = await Note.findById(req.params.id);
+        const note = await Note.findById(req.params.noteId);
 
-        if (req.params.id) {
-            delete req.params.id;
+        if (req.params.noteId) {
+            delete req.params.noteId;
         }
 
         //Patch request for making the deleted boolean -> true
