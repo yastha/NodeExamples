@@ -1,8 +1,11 @@
 const Note = require('../model/todo.js');
 
 exports.create = async(req, res) => {
-    // Validate request
-    if(!req.body.Name) {
+   
+try{
+    
+     // Validate request
+     if(!req.body.Name) {
         return res.status(400).json({
             message: "Name can not be empty"
         });
@@ -15,8 +18,6 @@ exports.create = async(req, res) => {
         deleted:req.body.deleted
     });
 
-    // Save Note in the database
-try{
     const data = await note.save();
     const msg= await res.json({message: " succesfully posted"});
 }
@@ -30,9 +31,24 @@ catch(err){
 // Retrieve and return all notes from the database.
 exports.findAll = async(req, res) => {
    try{
-    const note = await Note.find({deleted: {$ne: true}}).sort({date: 'desc'});
-    const msg = await res.json(note);
+    var pageNo = parseInt(req.query.pageNo)
+    var size = parseInt(req.query.size)
+     var query = {}
+  if(pageNo < 0 || pageNo === 0) {
+        response = {"error" : true,"message" : "invalid page number, should start with 1"};
+        return res.json(response)
+  }
+  query.skip = size * (pageNo - 1)
+  query.limit = size
+    const user= Note.find({},{},query);
+    const note = await user.find({deleted: {$ne: true}}).sort({date: 'desc'});
+    const msg= await res.json(note);
     return msg;
+  
+    // const note = await Note.find({deleted: {$ne: true}}).sort({date: 'desc'});
+    // const msg = await res.json(note);
+    // return msg;
+
 }
 catch(err){
     res.status(500).json({
