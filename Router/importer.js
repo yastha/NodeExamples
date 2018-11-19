@@ -6,8 +6,7 @@ var note = app1.Router();
     note.get('/notes', notes.findAll);
    
     note.get('/notes/:noteId', notes.findOne);
-
     note.put('/notes/:noteId', notes.update);
-   
+    note.patch('/notes/:noteId',notes.patch);
     note.delete('/notes/:noteId', notes.delete);
 module.exports = note;

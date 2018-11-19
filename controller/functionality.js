@@ -11,7 +11,8 @@ exports.create = async(req, res) => {
     // Create a Note
     const note = new Note({
         Name: req.body.Name || "UnNamed Name", 
-        Age: req.body.Age
+        Age: req.body.Age,
+        deleted:req.body.deleted
     });
 
     // Save Note in the database
@@ -75,29 +76,38 @@ exports.update = async (req, res) => {
             message: "Age can not be empty"
         });
     }
+    if(!req.body.Name) {
+        return res.status(400).send({
+            message: "Name can not be empty"
+        });
+    }
+    
+
 // Find note and update it with the request body
 try{
-    const note = await Note.findById(res.params.noteId);
-    note.Name = await req.body.Name;
-    note.Age = await req.body.Age;
+    const note = await Note.findById(req.params.noteId);
+    note.Name = req.body.Name;
+    note.Age = req.body.Age;
    
     if(!note) {
         return res.status(404).send({
             message: "Note not found with id " + req.params.noteId
         });
 }
+
 const data = await note.save();
 const message = await res.json({message: "successfully updated"});
 }
 
 catch(err) {
-    if(err.kind === 'ObjectId') {
-        return res.status(404).json({
-            message: "data not found with id "  + req.params.noteId
-        });                
-    }
+    // if(err.kind === 'ObjectId') {
+    //     return res.status(404).json({
+    //         message: "data not found with id "  + req.params.noteId
+    //     });                
+    // }
     return res.status(500).json({
-        message: "Error updating note with id " +req.params.noteId
+        message: "Error updating note with id " +req.params.noteId,
+        errMsg: err.toString()
     });
 }
 };
